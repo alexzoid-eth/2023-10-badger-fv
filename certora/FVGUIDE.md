@@ -1,4 +1,4 @@
-![Alex](https://github.com/alexzoid-eth/2023-10-badger/assets/24400567/d90b852b-1907-497b-8c3c-886213eb7ba9)
+![path](https://github.com/alexzoid-eth/2023-10-badger-fv/images/1.jpg)
 <div align="right">
   <i>Generated with midjourney 6</i>
 </div>
@@ -259,7 +259,7 @@ Once the job is completed, the results will be available at https://prover.certo
 
 You got a shareable link to result of your rule execution. It's comfortable to use, but keep in mind that all associated files like your specification, configs and contracts are available as well. If you want to securely share your result with Certora command in debug purpose, you can simply remove `anonymousKey` from the url. 
 
-![Screenshot from 2024-01-20 23-45-39](https://github.com/alexzoid-eth/2023-10-badger/assets/24400567/f545f103-74ff-40f5-8d3b-34a418b8e446)
+![path](https://github.com/alexzoid-eth/2023-10-badger-fv/images/2.png)
 
 <a name="preparation"></a>
 ## Preparation
@@ -302,7 +302,7 @@ When using the Prover, it's crucial to understand how it deals with calls to unr
 
 To identify these unresolved calls, refer to the `Contracts Call Resolutions` [section](https://prover.certora.com/output/52567/3828709713ec4504b61f3e8a2f824703?anonymousKey=1a9b6143a36bed6d9ab0c1afd325747842949db9) of the Prover's output.
 
-![Screenshot from 2024-01-20 23-49-34](https://github.com/alexzoid-eth/2023-10-badger/assets/24400567/22360198-bc47-4b2a-bd8e-3c6e48b274a9)
+![path](https://github.com/alexzoid-eth/2023-10-badger-fv/images/3.png)
 
 To effectively handle these unresolved calls, follow the guidance provided in the [Handling Unresolved Method Calls](https://docs.certora.com/en/latest/docs/user-guide/multicontract/index.html#handling-unresolved-method-calls) section of the Certora documentation. This resource provides detailed steps and best practices for managing such scenarios to ensure your specification behaves as intended.
 
@@ -467,7 +467,7 @@ Setting `num_mutants` to zero means only manual mutations will be executed. The 
 
 Alternatively, for more in-depth coverage analysis, you can add the `--coverage_info [none|basic|advanced]` flag to `certoraRun`. The `advanced` option provides more detailed insights but is slower. An example of this can be seen [here](https://prover.certora.com/output/52567/79c0d8b34f934d4bac6142136a68ee3f?anonymousKey=d4c7e909bc09c9acaee84c109ed83c3aab93a2d0), where `certoraRun certora/confs/ActivePool_verified.conf --rule sanity --coverage_info advanced` was executed. To view this, first click `Job Info` on the left panel, then `Unsat Core page` on the right side of the window.
 
-![Screenshot from 2024-01-20 23-51-07](https://github.com/alexzoid-eth/2023-10-badger/assets/24400567/aa7a0b88-3a6b-4e38-adf7-2c41d9829868)
+![path](https://github.com/alexzoid-eth/2023-10-badger-fv/images/4.png)
 
 <a name="identifying-problems"></a>
 ### Identifying Problems
