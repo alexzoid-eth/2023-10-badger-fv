@@ -11,11 +11,8 @@ contract CollSurplusPoolHarness is CollSurplusPool {
         address _cdpManagerAddress,
         address _activePoolAddress,
         address _collTokenAddress
-    ) CollSurplusPool(_borrowerOperationsAddress, _cdpManagerAddress, _activePoolAddress, _collTokenAddress) {
+    ) CollSurplusPool(_borrowerOperationsAddress, _cdpManagerAddress, _activePoolAddress, _collTokenAddress) { }
 
-    }
-
-    
     function call_isAuthorized(address user, uint32 functionSig) external view returns (bool) {
         return isAuthorized(user, bytes4(functionSig));
     }
