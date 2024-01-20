@@ -16,7 +16,7 @@
    - [Separating Functionality](#separating-functionality)
    - [Methods Declaration](#methods-declaration)
    - [Unresolved Calls](#unresolved-calls)
-   - [Shadowing State](#shadowing-state)
+   - [Shadowing Storage](#shadowing-storage)
 5. [**Thinking about Properties**](#thinking-about-properties)
 6. [**Developing Properties**](#developing-properties)
 7. [**Quality Assurance**](#quality-assurance)
@@ -29,16 +29,16 @@
 <a name="introduction"></a>
 ## Introduction
 
-In 2023, I got involved in formal verification by joining five Certora [community contests](https://www.certora.com/contests "https://www.certora.com/contests"), moving myself to a top position on the [leaderboard](https://www.certora.com/leaderboard "https://www.certora.com/leaderboard"). I learned a lot and developed a unique workflow and mindset, which I want to share in this article. I'll use the [Badger eBTC Competition](https://code4rena.com/audits/2023-10-badger-ebtc-audit-certora-formal-verification-competition "https://code4rena.com/audits/2023-10-badger-ebtc-audit-certora-formal-verification-competition") as an example in this article. This competition was an exciting challenge where participants were motivated to develop and validate comprehensive properties of 4 smart contracts: [EBTCToken](https://github.com/alexzoid-eth/2023-10-badger/blob/main/packages/contracts/contracts/EBTCToken.sol), [ActivePool](https://github.com/alexzoid-eth/2023-10-badger/blob/main/packages/contracts/contracts/ActivePool.sol), [CollSurplusPool](https://github.com/alexzoid-eth/2023-10-badger/blob/main/packages/contracts/contracts/CollSurplusPool.sol), and [SortedCdps](https://github.com/alexzoid-eth/2023-10-badger/blob/main/packages/contracts/contracts/SortedCdps.sol). 
+In 2023, I got involved in formal verification by joining five Certora [community contests](https://www.certora.com/contests), moving myself to a top position on the [leaderboard](https://www.certora.com/leaderboard). I learned a lot and developed a unique workflow and mindset, which I want to share in this article. I'll use the [Badger eBTC Competition](https://code4rena.com/audits/2023-10-badger-ebtc-audit-certora-formal-verification-competition) as an example in this article. This competition was an exciting challenge where participants were motivated to develop and validate comprehensive properties of 4 smart contracts: [EBTCToken](https://github.com/alexzoid-eth/2023-10-badger/blob/main/packages/contracts/contracts/EBTCToken.sol), [ActivePool](https://github.com/alexzoid-eth/2023-10-badger/blob/main/packages/contracts/contracts/ActivePool.sol), [CollSurplusPool](https://github.com/alexzoid-eth/2023-10-badger/blob/main/packages/contracts/contracts/CollSurplusPool.sol), and [SortedCdps](https://github.com/alexzoid-eth/2023-10-badger/blob/main/packages/contracts/contracts/SortedCdps.sol). 
 
-In this article, rather than reiterating technical details about formal verification, predicate logic, and the Certora Prover – all of which are thoroughly explained in the latest [Certora tutorials](https://docs.certora.com/projects/tutorials/en/latest/lesson1_prerequisites/index.html "https://docs.certora.com/projects/tutorials/en/latest/lesson1_prerequisites/index.html") – I will focus on sharing a practical workflow and my personal insights. Additionally, I'll include a collection of helpful resources and links to guide you through the process. 
+In this article, rather than reiterating technical details about formal verification, predicate logic, and the Certora Prover – all of which are thoroughly explained in the latest [Certora tutorials](https://docs.certora.com/projects/tutorials/en/latest/lesson1_prerequisites/index.html) – I will focus on sharing a practical workflow and my personal insights. Additionally, I'll include a collection of helpful resources and links to guide you through the process. 
 
 > "Formal verification might sound hard, but you don't need to be a math expert to use it." [(c)](https://twitter.com/CertoraInc/status/1731719978771227071)
 
 Simply put, the formal verification process involves crafting properties (akin to writing tests) and submitting them alongside compiled Solidity smart contracts to a remote prover. This prover essentially transforms the contract bytecode and your rules into a mathematical model, determining the validity of your rules.  
 
 For those new to Certora Prover, it's crucial to understand that:
-1. The prover operates at the bytecode level. It even [works](https://www.certora.com/blog/vyper-announcement "https://www.certora.com/blog/vyper-announcement") with Vyper language as well.
+1. The prover operates at the bytecode level. It even [works](https://www.certora.com/blog/vyper-announcement) with Vyper language as well.
 2. Unlike fuzz testing, where functions are repeatedly executed with varying parameters, the prover efficiently translates the contract's bytecode and rules into a mathematical model that proves every possible code execution path.
 4. Variables, including the contract state, blockchain environment, and return values of unresolved external calls, are assigned a range of all possible values. It's your responsibility to define these bounds.
 
@@ -245,7 +245,7 @@ This basic rule ensures that all external functions can execute without causing 
 
 Now we can execute a prover with `certoraRun certora/confs/ActivePool_verified.conf` from the root directory. 
 
-Output will be something like this
+Output will be something like this:
 ```bash
 // ... Compilation messages ...
 
@@ -275,15 +275,15 @@ For instance, in our project scope, we have four contracts: `EBTCToken`, `Active
 
 ```
 certora\specs\
-├── ActivePool.spec
-├── CollSurplusPool.spec
-├── EBTCToken.spec
-└── SortedCdps.spec
 ├── base
 │   ├── activePool.spec
 │   ├── collSurplusPool.spec
 │   ├── eBTCToken.spec
 │   └── sortedCdps.spec
+├── ActivePool.spec
+├── CollSurplusPool.spec
+├── EBTCToken.spec
+└── SortedCdps.spec
 ```
 
 In this structure, we use the root `spec` directory for testing the contracts, and the `base` directory for specifications meant for importing. Begin by adding the `base` directory and the relevant files. For example, insert `import "./base/activePool.spec";` at the beginning of `ActivePool.spec` and do the same for the other files.
@@ -306,8 +306,8 @@ To identify these unresolved calls, refer to the `Contracts Call Resolutions` [s
 
 To effectively handle these unresolved calls, follow the guidance provided in the [Handling Unresolved Method Calls](https://docs.certora.com/en/latest/docs/user-guide/multicontract/index.html#handling-unresolved-method-calls) section of the Certora documentation. This resource provides detailed steps and best practices for managing such scenarios to ensure your specification behaves as intended.
 
-<a name="shadowing-state"></a>
-### Shadowing State
+<a name="shadowing-storage"></a>
+### Shadowing Storage
 
 Creating a shadow copy of all storage variables (in `GHOSTS & HOOKS` block) is a strategic step before formulating properties. This approach streamlines the process, allowing you to focus on developing invariants. 
 
@@ -356,7 +356,7 @@ Though setting up hooks can be labor-intensive, this crucial preparation step si
 
 As we reach this phase, it's time to start formulating our properties. However, before diving into code, it's crucial to take a moment to systematically conceptualize your properties.
 
-Begin by framing your properties in simple English ([PROPERTIES.md](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/PROPERTIES.md)). This approach helps in clearly defining what you aim to achieve before any coding begins. For guidance on this process, consider these insightful posts: [Post #1](https://twitter.com/agfviggiano/status/1687854392202997760) and [Post #2](https://twitter.com/agfviggiano/status/1735235127171551320), which offer detailed explanations.
+Begin by framing your properties in simple English ([PROPERTIES.md](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/certora/PROPERTIES.md)). This approach helps in clearly defining what you aim to achieve before any coding begins. For guidance on this process, consider these insightful posts: [Post #1](https://twitter.com/agfviggiano/status/1687854392202997760) and [Post #2](https://twitter.com/agfviggiano/status/1735235127171551320), which offer detailed explanations.
 
 Certora's team has identified five primary [categories of properties](https://github.com/Certora/Tutorials/blob/master/06.Lesson_ThinkingProperties/Categorizing_Properties.pdf).
 ![298145398-50766fd0-c794-48b0-a944-217832294b72](https://github.com/alexzoid-eth/2023-10-badger/assets/24400567/13cfa824-dbb2-4b1e-b48a-0b79d1c23139)
@@ -407,14 +407,14 @@ When writing your properties, adopt a methodical approach by breaking down compl
 
 To test a specific property, use the `--rule` flag. This tests only the selected rule, saving time: `certoraRun certora/confs/ActivePool_verified.conf --rule sanity`.
 
-For additional information on CVL (Certora Verification Language), I recommend paying attention to official [Documentation](https://docs.certora.com/en/latest/docs/cvl/index.html "https://docs.certora.com/en/latest/docs/cvl/index.html"), video of [Practical Introduction](https://www.youtube.com/watch?v=DtVj788m3Qo "https://www.youtube.com/watch?v=DtVj788m3Qo"), and exploring a range of [examples](https://github.com/Certora/Examples "https://github.com/Certora/Examples") and [real projects](https://github.com/Kirkeelee/Certora-examples).
+For additional information on CVL (Certora Verification Language), I recommend paying attention to official [Documentation](https://docs.certora.com/en/latest/docs/cvl/index.html), video of [Practical Introduction](https://www.youtube.com/watch?v=DtVj788m3Qo), and exploring a range of [examples](https://github.com/Certora/Examples) and [real projects](https://github.com/Kirkeelee/Certora-examples).
 
 If you encounter any questions or need further clarification, the [Certora Discord help-desk](https://discord.com/channels/795999272293236746/1104825071450718338) is an excellent resource for information and support.
 
 <a name="quality-assurance"></a>
 ## Quality Assurance
 
-Ensuring the quality of your properties is as crucial as testing in traditional programming. To gain a deeper understanding of this crucial process, I recommend two insightful videos: [Checking Specifications - What's the Quality of My Rules?](https://www.youtube.com/watch?v=PjUua2Hi1GA&t=433s) and [Webinar: How to Prevent Prover Timeouts](https://www.youtube.com/watch?v=mntP0_EN-ZQ).
+Ensuring the quality of your properties is as crucial as testing in traditional programming. To gain a deeper understanding of this process, I recommend two insightful videos: [Checking Specifications - What's the Quality of My Rules?](https://www.youtube.com/watch?v=PjUua2Hi1GA&t=433s) and [Webinar: How to Prevent Prover Timeouts](https://www.youtube.com/watch?v=mntP0_EN-ZQ).
 
 The QA process for formal verification can be categorized into three main stages:
 
@@ -447,7 +447,7 @@ It’s advisable to perform this test for each property immediately after its de
 
 Historically, mutation testing in Solidity relied on [Gambit](https://github.com/Certora/gambit), an open-source mutation generator ([documentation](https://docs.certora.com/en/latest/docs/gambit/index.html)). Nowadays, `Gambit` has been integrated into the more comprehensive `certoraMutate` engine ([documentation](https://docs.certora.com/en/latest/docs/gambit/mutation-verifier.html)), which you should focus on. This tool combines the functionalities of `Gambit`, `certoraRun`, a server infrastructure designed for extensive testing, and a user-friendly [dashboard](https://mutation-testing.certora.com/).
 
-Configuring `certoraMutate` is similar to setting up the prover using `conf` files. For example, the configuration for `ActivePool.sol` is available at [certora/confs/gambit/ActivePool.conf](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/certora/confs/gambit/ActivePool.conf):
+Configuring `certoraMutate` is similar to setting up the prover using `conf` files. For example, the configuration for `ActivePool.sol` is available at [certora/confs/gambit/ActivePool.mconf](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/certora/confs/gambit/ActivePool.mconf):
 
 ```json
 { 
@@ -461,6 +461,8 @@ Configuring `certoraMutate` is similar to setting up the prover using `conf` fil
 }  
 ```
 
+Execute with `certoraMutate --prover_conf certora/confs/ActivePool_verified.conf --mutation_conf certora/confs/gambit/ActivePool.mconf`.
+
 Setting `num_mutants` to zero means only manual mutations will be executed. The process involves replacing the original `ActivePool.sol` with each file in the [../../mutations/ActivePool](https://github.com/alexzoid-eth/2023-10-badger-fv/tree/main/certora/mutations/ActivePool) directory and running `certoraRun`.
 
 Alternatively, for more in-depth coverage analysis, you can add the `--coverage_info [none|basic|advanced]` flag to `certoraRun`. The `advanced` option provides more detailed insights but is slower. An example of this can be seen [here](https://prover.certora.com/output/52567/79c0d8b34f934d4bac6142136a68ee3f?anonymousKey=d4c7e909bc09c9acaee84c109ed83c3aab93a2d0), where `certoraRun certora/confs/ActivePool_verified.conf --rule sanity --coverage_info advanced` was executed. To view this, first click `Job Info` on the left panel, then `Unsat Core page` on the right side of the window.
@@ -470,7 +472,7 @@ Alternatively, for more in-depth coverage analysis, you can add the `--coverage_
 <a name="identifying-problems"></a>
 ### Identifying Problems
 
-To guarantee the quality of your property specifications, consider using the `--rule_sanity` option, which performs automatic checks to identify common errors in specifications. Examples include unreachable `assert` statements due to reverts, `asserts` that are always true, invariants that invariably pass, or superfluous `require` and `assert` statements.
+To guarantee the quality of your property specifications, consider using the `--rule_sanity` option, which performs automatic checks to identify common errors in specifications. Examples include unreachable `assert` statements due to reverts, `asserts` that are always `true`, invariants that invariably pass, or superfluous `require` and `assert` statements.
 
 For detailed insights into these checks, refer to the [sanity checks documentation](https://docs.certora.com/en/latest/docs/prover/checking/sanity.html).
 
@@ -484,7 +486,7 @@ Minimizing the time spent on proving properties and testing them with manual mut
    - Example usage: `./certora/mutations/addMutation.sh ActivePool ./packages/contracts/contracts/ActivePool.sol`
    - The script copies the mutated contract file into the `certora/mutations/ActivePool/` directory and adds a mutation comment, similar to the output of the `git diff` command.
 
-   See [certora/mutations/ActivePool/2.sol](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/certora/mutations/ActivePool/2.sol#L46-L83) for an example mutation.
+   See [certora/mutations/ActivePool/2.sol](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/certora/mutations/ActivePool/2.sol#L46-L83) for an example mutation:
    ```solidity
        constructor(
            address _borrowerOperationsAddress,
@@ -544,4 +546,3 @@ By integrating these scripts into your development process, you can significantl
 ## Conclusion
 
 Formal verification fulfills a crucial dual role. On one hand, it validates code functionality through mathematical analysis, akin to traditional testing. On the other, it acts as an advanced tool for auditing, ensuring not just functionality but also the security of the code. This comprehensive approach is positioning formal verification as a standard practice in the realm of DeFi.
-s
