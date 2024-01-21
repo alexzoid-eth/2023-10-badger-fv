@@ -356,7 +356,7 @@ Though setting up hooks can be labor-intensive, this crucial preparation step si
 
 As we reach this phase, it's time to start formulating our properties. However, before diving into code, it's crucial to take a moment to systematically conceptualize your properties.
 
-Begin by framing your properties in simple English ([PROPERTIES.md](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/certora/PROPERTIES.md)). This approach helps in clearly defining what you aim to achieve before any coding begins. For guidance on this process, consider these insightful posts: [Post #1](https://twitter.com/agfviggiano/status/1687854392202997760) and [Post #2](https://twitter.com/agfviggiano/status/1735235127171551320), which offer detailed explanations.
+Begin by framing your properties in simple English ([PROPERTIES.md](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/packages/contracts/specs/PROPERTIES.md)). This approach helps in clearly defining what you aim to achieve before any coding begins. For guidance on this process, consider these insightful posts: [Post #1](https://twitter.com/agfviggiano/status/1687854392202997760) and [Post #2](https://twitter.com/agfviggiano/status/1735235127171551320), which offer detailed explanations.
 
 Certora's team has identified five primary [categories of properties](https://github.com/Certora/Tutorials/blob/master/06.Lesson_ThinkingProperties/Categorizing_Properties.pdf).
 ![298145398-50766fd0-c794-48b0-a944-217832294b72](https://github.com/alexzoid-eth/2023-10-badger/assets/24400567/13cfa824-dbb2-4b1e-b48a-0b79d1c23139)
