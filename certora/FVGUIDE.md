@@ -313,7 +313,7 @@ Creating a shadow copy of all storage variables (in `GHOSTS & HOOKS` block) is a
 
 There are two main reasons to adopt this strategy:
 1. **Access to Private Variables**: Without altering the original contract code, creating a shadow copy is the only way to access `private` variables.
-2. **Invariants Limitations**: By default, direct calls to contract functions are not supported in invariants.
+2. **Quantifiers Limitations**: By default (without `--allow_solidity_calls_in_quantifiers` flag), direct calls to contract functions are not supported in quantifiers.
 
 A typical shadow copy involves three components:
 1. **The Ghost Variable**: Represents the shadow copy of the actual storage variable.
