@@ -135,7 +135,7 @@ methods {
 
 - **FUNCTIONS** ([link](https://docs.certora.com/en/latest/docs/confluence/anatomy/functions.html)): In CVL, a function can either be invoked within a rule or serve as a stub for a contract's external function. 
 
-- **GHOSTS & HOOKS** ([Ghosts](https://docs.certora.com/en/latest/docs/cvl/ghosts.html) & [Hooks](https://docs.certora.com/en/latest/docs/cvl/hooks.html)): Mostly contains shadow copies of storage variables. Its importance lies in providing access to `private` variables and facilitating the implementation of effective invariants.
+- **GHOSTS & HOOKS** ([Ghosts](https://docs.certora.com/en/latest/docs/cvl/ghosts.html) & [Hooks](https://docs.certora.com/en/latest/docs/cvl/hooks.html)): Mostly contains shadow copies of storage variables. Its importance lies in providing access to `private` variables and facilitating the implementation of effective invariants and tracking things that didn't exist in the original contract (like sum of balances). 
 
 - **PROPERTIES**: This section is where the [rules](https://docs.certora.com/en/latest/docs/cvl/rules.html) and [invariants](https://docs.certora.com/en/latest/docs/cvl/invariants.html) are defined. It's the core of your specification.
 
@@ -311,9 +311,10 @@ To effectively handle these unresolved calls, follow the guidance provided in th
 
 Creating a shadow copy of all storage variables (in `GHOSTS & HOOKS` block) is a strategic step before formulating properties. This approach streamlines the process, allowing you to focus on developing invariants. 
 
-There are two main reasons to adopt this strategy:
-1. **Access to Private Variables**: Without altering the original contract code, creating a shadow copy is the only way to access `private` variables.
-2. **Quantifiers Limitations**: By default (without `--allow_solidity_calls_in_quantifiers` flag), direct calls to contract functions are not supported in quantifiers.
+There are three main reasons to adopt this strategy:
+1. **Extended Functionality Tracking**: It allows for tracking additional metrics or states that were not originally included in the contract. For example, it enables the calculation and monitoring of aggregate values like the sum of balances, which might not be directly available in the original contract.
+2. **Access to Private Variables**: Without altering the original contract code, creating a shadow copy is the only way to access `private` variables.
+3. **Quantifiers Limitations**: By default (without `--allow_solidity_calls_in_quantifiers` flag), direct calls to contract functions are not supported in quantifiers.
 
 A typical shadow copy involves three components:
 1. **The Ghost Variable**: Represents the shadow copy of the actual storage variable.
