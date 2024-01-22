@@ -1,4 +1,4 @@
-![path](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/images/1.jpg)
+![](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/images/1.jpg)
 <div align="right">
   <i>Generated with midjourney 6</i>
 </div>
@@ -39,7 +39,7 @@ Simply put, the formal verification process involves crafting properties (akin t
 
 For those new to Certora Prover, it's crucial to understand that:
 1. The prover operates at the bytecode level. It even [works](https://www.certora.com/blog/vyper-announcement) with Vyper language as well.
-2. Unlike fuzz testing, where functions are repeatedly executed with varying parameters, the prover efficiently translates the contract's bytecode and rules into a mathematical model that proves every possible code execution path.
+2. Unlike fuzz testing, where functions are repeatedly executed with varying parameters, the prover efficiently translates the contract's bytecode and rules into a mathematical model that proves every possible code execution .
 4. Variables, including the contract state, blockchain environment, and return values of unresolved external calls, are assigned a range of all possible values. It's your responsibility to define these bounds.
 
 <a name="configuration"></a>
@@ -241,7 +241,7 @@ rule sanity(method f, env e, calldataarg args) {
 }
 ```
 
-This basic rule ensures that all external functions can execute without causing a revert. Typically, the prover overlooks any execution paths leading to a revert. However, using the `satisfy` system function, we can confirm if a specific condition holds `true` in at least one scenario. In other words, it checks that each `external` function can successfully execute without reverting in at least one possible case.
+This basic rule ensures that all external functions can execute without causing a revert. Typically, the prover overlooks any execution s leading to a revert. However, using the `satisfy` system function, we can confirm if a specific condition holds `true` in at least one scenario. In other words, it checks that each `external` function can successfully execute without reverting in at least one possible case.
 
 Now we can execute a prover with `certoraRun certora/confs/ActivePool_verified.conf` from the root directory. 
 
@@ -259,7 +259,7 @@ Once the job is completed, the results will be available at https://prover.certo
 
 You got a shareable link to result of your rule execution. It's comfortable to use, but keep in mind that all associated files like your specification, configs and contracts are available as well. If you want to securely share your result with Certora command in debug purpose, you can simply remove `anonymousKey` from the url. 
 
-![path](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/images/2.png)
+![](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/images/2.png)
 
 <a name="preparation"></a>
 ## Preparation
@@ -302,7 +302,7 @@ When using the Prover, it's crucial to understand how it deals with calls to unr
 
 To identify these unresolved calls, refer to the `Contracts Call Resolutions` [section](https://prover.certora.com/output/52567/3828709713ec4504b61f3e8a2f824703?anonymousKey=1a9b6143a36bed6d9ab0c1afd325747842949db9) of the Prover's output.
 
-![path](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/images/3.png)
+![](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/images/3.png)
 
 To effectively handle these unresolved calls, follow the guidance provided in the [Handling Unresolved Method Calls](https://docs.certora.com/en/latest/docs/user-guide/multicontract/index.html#handling-unresolved-method-calls) section of the Certora documentation. This resource provides detailed steps and best practices for managing such scenarios to ensure your specification behaves as intended.
 
@@ -359,7 +359,7 @@ As we reach this phase, it's time to start formulating our properties. However, 
 Begin by framing your properties in simple English ([PROPERTIES.md](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/packages/contracts/specs/PROPERTIES.md)). This approach helps in clearly defining what you aim to achieve before any coding begins. For guidance on this process, consider these insightful posts: [Post #1](https://twitter.com/agfviggiano/status/1687854392202997760) and [Post #2](https://twitter.com/agfviggiano/status/1735235127171551320), which offer detailed explanations.
 
 Certora's team has identified five primary [categories of properties](https://github.com/Certora/Tutorials/blob/master/06.Lesson_ThinkingProperties/Categorizing_Properties.pdf).
-![properties](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/images/5.png)
+![](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/images/5.png)
 
 I suggest starting with the `Valid States` category. These properties are crucial when linking your specification to another contract. They encompass initial setups like constructor configurations, initial storage variable values, correctness of linked lists, and summaries of user balances relative to the total balance. From an external contract's viewpoint, these invariants are essential for proper setup and utilization.
 
@@ -467,7 +467,7 @@ Setting `num_mutants` to zero means only manual mutations will be executed. The 
 
 Alternatively, for more in-depth coverage analysis, you can add the `--coverage_info [none|basic|advanced]` flag to `certoraRun`. The `advanced` option provides more detailed insights but is slower. An example of this can be seen [here](https://prover.certora.com/output/52567/79c0d8b34f934d4bac6142136a68ee3f?anonymousKey=d4c7e909bc09c9acaee84c109ed83c3aab93a2d0), where `certoraRun certora/confs/ActivePool_verified.conf --rule sanity --coverage_info advanced` was executed. To view this, first click `Job Info` on the left panel, then `Unsat Core page` on the right side of the window.
 
-![path](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/images/4.png)
+![](https://github.com/alexzoid-eth/2023-10-badger-fv/blob/main/images/4.png)
 
 <a name="identifying-problems"></a>
 ### Identifying Problems
