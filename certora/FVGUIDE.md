@@ -314,7 +314,7 @@ Creating a shadow copy of all storage variables (in `GHOSTS & HOOKS` block) is a
 There are three main reasons to adopt this strategy:
 1. **Extended Functionality Tracking**: It allows for tracking additional metrics or states that were not originally included in the contract. For example, it enables the calculation and monitoring of aggregate values like the sum of balances, which might not be directly available in the original contract.
 2. **Access to Private Variables**: Without altering the original contract code, creating a shadow copy is the only way to access `private` variables.
-3. **Quantifiers Limitations**: By default (without `--allow_solidity_calls_in_quantifiers` flag), direct calls to contract functions are not supported in quantifiers.
+3. **Quantifiers Limitations**: By default (without `--allow_solidity_calls_in_quantifiers` flag), direct calls to contract functions are not supported in [quantifiers](https://docs.certora.com/projects/tutorials/en/latest/lesson1_prerequisites/propositional_logic.html#quantifiers).
 
 A typical shadow copy involves three components:
 1. **The Ghost Variable**: Represents the shadow copy of the actual storage variable.
