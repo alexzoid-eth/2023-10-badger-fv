@@ -61,7 +61,9 @@ Each folder has a specific role, which I will discuss in detail in the following
 
 > Prover interacts with `external` (`public`) functions and variables. Access to `internal` can be provided via harness contracts.
 
-For each contract you intend to test, create a corresponding harness contract. Additionally, if necessary, add mock contracts to simulate external calls. These harness contracts are the ones the Prover will interact with. Essentially, a harness is a wrapper inherited from the contract under test. Its primary function is to provide useful features, like access to `internal` variables and functions, and to overcome certain limitations of CVL language.
+Essentially, a harness is a wrapper inherited from the contract under test. Its primary function is to provide useful features, like access to `internal` variables and functions, and to overcome certain limitations of CVL language. While its use isn't obligatory (the prover can directly interact with the primary contracts) I advise establishing it before implementing properties. This preliminary setup is likely to streamline the process and save time in subsequent stages.
+
+For each contract you intend to test, create a corresponding harness contract. Additionally, if necessary, add mock contracts to simulate external calls. These harness contracts are the ones the Prover will interact with. 
 
 Here is an example of the file structure for harness contracts and mocks:
 ```
@@ -241,7 +243,7 @@ rule sanity(method f, env e, calldataarg args) {
 }
 ```
 
-This basic rule ensures that all external functions can execute without causing a revert. Typically, the prover overlooks any execution s leading to a revert. However, using the `satisfy` system function, we can confirm if a specific condition holds `true` in at least one scenario. In other words, it checks that each `external` function can successfully execute without reverting in at least one possible case.
+This basic rule ensures that all external functions can execute without causing a revert. Typically, the prover overlooks any executions leading to a revert. However, using the `satisfy` system function, we can confirm if a specific condition holds `true` in at least one scenario. In other words, it checks that each `external` function can successfully execute without reverting in at least one possible case.
 
 Now we can execute a prover with `certoraRun certora/confs/ActivePool_verified.conf` from the root directory. 
 
