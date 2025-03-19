@@ -47,11 +47,11 @@ ghost mathint ghostTotalSupply {
     axiom ghostTotalSupply >= 0;
 }
 
-hook Sload uint256 val _EBTCToken._totalSupply STORAGE {
+hook Sload uint256 val _EBTCToken._totalSupply {
     require(require_uint256(ghostTotalSupply) == val);
 }
 
-hook Sstore _EBTCToken._totalSupply uint256 val STORAGE {
+hook Sstore _EBTCToken._totalSupply uint256 val {
     ghostTotalSupply = val;
 }
 
@@ -81,11 +81,11 @@ ghost mathint sumAllBalance {
     init_state axiom sumAllBalance == 0;
 }
 
-hook Sload uint256 val _EBTCToken._balances[KEY address i] STORAGE {
+hook Sload uint256 val _EBTCToken._balances[KEY address i] {
     require(require_uint256(ghostBalances[i]) == val);
 } 
 
-hook Sstore _EBTCToken._balances[KEY address i] uint256 val STORAGE {
+hook Sstore _EBTCToken._balances[KEY address i] uint256 val {
     
     ghostBalancesPrev[i] = ghostBalances[i];
     ghostBalances[i] = val;
@@ -107,12 +107,12 @@ ghost mapping(address => mapping(address => mathint)) ghostAllowancesPrev {
     init_state axiom forall address key. forall address val. ghostAllowancesPrev[key][val] == 0;
 }
 
-hook Sstore _EBTCToken._allowances[KEY address key][KEY address val] uint256 amount (uint256 prevAmount) STORAGE {
+hook Sstore _EBTCToken._allowances[KEY address key][KEY address val] uint256 amount (uint256 prevAmount) {
     ghostAllowancesPrev[key][val] = prevAmount;
     ghostAllowances[key][val] = amount;
 }
 
-hook Sload uint256 amount _EBTCToken._allowances[KEY address key][KEY address val] STORAGE {
+hook Sload uint256 amount _EBTCToken._allowances[KEY address key][KEY address val] {
     require(require_uint256(ghostAllowances[key][val]) == amount);
 }
 

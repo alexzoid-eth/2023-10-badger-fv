@@ -21,7 +21,7 @@ ghost sumOfBalances() returns uint256 {
   init_state axiom sumOfBalances() == 0;
 }
 
-hook Sstore _balances[KEY address addr] uint256 newValue (uint256 oldValue) STORAGE {
+hook Sstore _balances[KEY address addr] uint256 newValue (uint256 oldValue) {
     havoc sumOfBalances assuming sumOfBalances@new() == sumOfBalances@old() + newValue - oldValue;
 }
 

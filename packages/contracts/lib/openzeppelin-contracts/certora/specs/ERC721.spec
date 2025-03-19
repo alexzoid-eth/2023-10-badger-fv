@@ -66,7 +66,7 @@ ghost mapping(address => uint256) ownedByUser {
     init_state axiom forall address a. ownedByUser[a] == 0;
 }
 
-hook Sstore _owners[KEY uint256 tokenId] address newOwner (address oldOwner) STORAGE {
+hook Sstore _owners[KEY uint256 tokenId] address newOwner (address oldOwner) {
     ownedByUser[newOwner] = ownedByUser[newOwner] + to_uint256(newOwner != 0 ? 1 : 0);
     ownedByUser[oldOwner] = ownedByUser[oldOwner] - to_uint256(oldOwner != 0 ? 1 : 0);
 
@@ -84,7 +84,7 @@ ghost sumOfBalances() returns uint256 {
   init_state axiom sumOfBalances() == 0;
 }
 
-hook Sstore _balances[KEY address addr] uint256 newValue (uint256 oldValue) STORAGE {
+hook Sstore _balances[KEY address addr] uint256 newValue (uint256 oldValue) {
     havoc sumOfBalances assuming sumOfBalances@new() == sumOfBalances@old() + newValue - oldValue;
 }
 
@@ -92,7 +92,7 @@ ghost mapping(address => uint256) ghostBalanceOf {
     init_state axiom forall address a. ghostBalanceOf[a] == 0;
 }
 
-hook Sload uint256 value _balances[KEY address user] STORAGE {
+hook Sload uint256 value _balances[KEY address user] {
     require ghostBalanceOf[user] == value;
 }
 

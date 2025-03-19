@@ -33,7 +33,7 @@ ghost sum_all_votes_power() returns uint256 {
 	init_state axiom sum_all_votes_power() == 0;
 }
 
-hook Sstore ghost_sum_vote_power_by_id [KEY uint256 pId] uint256 current_power(uint256 old_power) STORAGE {
+hook Sstore ghost_sum_vote_power_by_id [KEY uint256 pId] uint256 current_power(uint256 old_power) {
 	havoc sum_all_votes_power assuming sum_all_votes_power@new() == sum_all_votes_power@old() - old_power + current_power;
 }
 
@@ -72,21 +72,21 @@ ghost votesAbstain() returns uint256 {
     init_state axiom votesAbstain() == 0;
 }
 
-hook Sstore _proposalVotes [KEY uint256 pId].againstVotes uint256 votes(uint256 old_votes) STORAGE {
+hook Sstore _proposalVotes [KEY uint256 pId].againstVotes uint256 votes(uint256 old_votes) {
 	havoc tracked_weight assuming forall uint256 p.(p == pId => tracked_weight@new(p) == tracked_weight@old(p) - old_votes + votes) &&
 	                                            (p != pId => tracked_weight@new(p) == tracked_weight@old(p));
 	havoc sum_tracked_weight assuming sum_tracked_weight@new() == sum_tracked_weight@old() - old_votes + votes;
     havoc votesAgainst assuming votesAgainst@new() == votesAgainst@old() - old_votes + votes;
 }
 
-hook Sstore _proposalVotes [KEY uint256 pId].forVotes uint256 votes(uint256 old_votes) STORAGE {
+hook Sstore _proposalVotes [KEY uint256 pId].forVotes uint256 votes(uint256 old_votes) {
 	havoc tracked_weight assuming forall uint256 p.(p == pId => tracked_weight@new(p) == tracked_weight@old(p) - old_votes + votes) &&
 	                                            (p != pId => tracked_weight@new(p) == tracked_weight@old(p));
 	havoc sum_tracked_weight assuming sum_tracked_weight@new() == sum_tracked_weight@old() - old_votes + votes;
     havoc votesFor assuming votesFor@new() == votesFor@old() - old_votes + votes;
 }
 
-hook Sstore _proposalVotes [KEY uint256 pId].abstainVotes uint256 votes(uint256 old_votes) STORAGE {
+hook Sstore _proposalVotes [KEY uint256 pId].abstainVotes uint256 votes(uint256 old_votes) {
 	havoc tracked_weight assuming forall uint256 p.(p == pId => tracked_weight@new(p) == tracked_weight@old(p) - old_votes + votes) &&
 	                                            (p != pId => tracked_weight@new(p) == tracked_weight@old(p));
 	havoc sum_tracked_weight assuming sum_tracked_weight@new() == sum_tracked_weight@old() - old_votes + votes;

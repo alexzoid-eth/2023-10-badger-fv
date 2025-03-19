@@ -47,11 +47,11 @@ ghost bool ghostTotalSurplusCollSharesChanged {
     init_state axiom ghostTotalSurplusCollSharesChanged == false;
 }
 
-hook Sload uint256 val _CollSurplusPool.totalSurplusCollShares STORAGE {
+hook Sload uint256 val _CollSurplusPool.totalSurplusCollShares {
     require(require_uint256(ghostTotalSurplusCollShares) == val);
 }
 
-hook Sstore _CollSurplusPool.totalSurplusCollShares uint256 val STORAGE {
+hook Sstore _CollSurplusPool.totalSurplusCollShares uint256 val {
     ghostTotalSurplusCollSharesPrev = ghostTotalSurplusCollShares;
     ghostTotalSurplusCollSharesChanged = require_uint256(ghostTotalSurplusCollShares) != val;
     ghostTotalSurplusCollShares = val;
@@ -77,11 +77,11 @@ ghost address ghostUserAddressBalancesChanged {
     init_state axiom ghostUserAddressBalancesChanged == 0;
 }
 
-hook Sload uint256 val _CollSurplusPool.balances[KEY address i] STORAGE {
+hook Sload uint256 val _CollSurplusPool.balances[KEY address i] {
     require(require_uint256(ghostBalances[i]) == val);
 } 
 
-hook Sstore _CollSurplusPool.balances[KEY address i] uint256 val STORAGE {
+hook Sstore _CollSurplusPool.balances[KEY address i] uint256 val {
     
     // Use zero address in invariant checks
     require(i != 0);

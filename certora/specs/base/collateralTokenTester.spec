@@ -27,11 +27,11 @@ ghost mathint ghostCollateralTotalBalance {
     init_state axiom ghostCollateralTotalBalance == 0;
 }
 
-hook Sload uint256 val _CollateralTokenTester._totalBalance STORAGE {
+hook Sload uint256 val _CollateralTokenTester._totalBalance {
     require(require_uint256(ghostCollateralTotalBalance) == val);
 }
 
-hook Sstore _CollateralTokenTester._totalBalance uint256 val STORAGE {
+hook Sstore _CollateralTokenTester._totalBalance uint256 val {
     ghostCollateralTotalBalance = val;
 }
 
@@ -56,11 +56,11 @@ ghost mapping (address => bool) ghostCollateralBalancesChanged {
     init_state axiom forall address i. ghostCollateralBalancesChanged[i] == false;
 }
 
-hook Sload uint256 val _CollateralTokenTester.balances[KEY address i] STORAGE {
+hook Sload uint256 val _CollateralTokenTester.balances[KEY address i] {
     require(require_uint256(ghostCollateralBalances[i]) == val);
 } 
 
-hook Sstore _CollateralTokenTester.balances[KEY address i] uint256 val STORAGE {
+hook Sstore _CollateralTokenTester.balances[KEY address i] uint256 val {
     ghostCollateralBalancesPrev[i] = ghostCollateralBalances[i];
     ghostCollateralBalancesChanged[i] = require_uint256(ghostCollateralBalances[i]) != val;
     ghostCollateralBalances[i] = val;

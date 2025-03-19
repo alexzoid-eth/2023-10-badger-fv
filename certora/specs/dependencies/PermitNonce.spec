@@ -20,11 +20,11 @@ ghost mapping (address => mathint) ghostNoncesPrev {
     axiom forall address i. ghostNoncesPrev[i] >= 0 && ghostNoncesPrev[i] < max_uint64;
 }
 
-hook Sload uint256 val currentContract._nonces[KEY address i] STORAGE {
+hook Sload uint256 val currentContract._nonces[KEY address i] {
     require(assert_uint256(ghostNonces[i]) == val);
 } 
 
-hook Sstore currentContract._nonces[KEY address i] uint256 val (uint256 valPrev) STORAGE {
+hook Sstore currentContract._nonces[KEY address i] uint256 val (uint256 valPrev) {
     ghostNoncesPrev[i] = ghostNonces[i];
     ghostNonces[i] = to_mathint(val);
 }

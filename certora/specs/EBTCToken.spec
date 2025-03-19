@@ -1,4 +1,5 @@
 import "./base/eBTCToken.spec";
+import "./dependencies/CdpManager.spec";
 import "./dependencies/AuthNoOwner.spec";
 import "./dependencies/PermitNonce.spec";
 import "./dependencies/helper.spec";

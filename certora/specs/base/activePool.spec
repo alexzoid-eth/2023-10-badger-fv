@@ -54,11 +54,11 @@ ghost address ghostFeeRecipientAddressPrev {
     init_state axiom ghostFeeRecipientAddressPrev == 0;
 }
 
-hook Sload address val _ActivePool.feeRecipientAddress STORAGE {
+hook Sload address val _ActivePool.feeRecipientAddress {
     require(ghostFeeRecipientAddress == val);
 }
 
-hook Sstore _ActivePool.feeRecipientAddress address val STORAGE {
+hook Sstore _ActivePool.feeRecipientAddress address val {
     ghostFeeRecipientAddressPrev = ghostFeeRecipientAddress;
     ghostFeeRecipientAddress = val;
 }
@@ -79,11 +79,11 @@ ghost bool ghostSystemCollSharesChanged {
     init_state axiom ghostSystemCollSharesChanged == false;
 }
 
-hook Sload uint256 val _ActivePool.systemCollShares STORAGE {
+hook Sload uint256 val _ActivePool.systemCollShares {
     require(ghostSystemCollShares == val);
 }
 
-hook Sstore _ActivePool.systemCollShares uint256 val STORAGE {
+hook Sstore _ActivePool.systemCollShares uint256 val {
     ghostSystemCollSharesPrev = ghostSystemCollShares;
     ghostSystemCollShares = val;
     ghostSystemCollSharesChanged = true;
@@ -101,11 +101,11 @@ ghost uint256 ghostSystemDebtPrev {
     init_state axiom ghostSystemDebtPrev == 0;
 }
 
-hook Sload uint256 val _ActivePool.systemDebt STORAGE {
+hook Sload uint256 val _ActivePool.systemDebt {
     require(ghostSystemDebt == val);
 }
 
-hook Sstore _ActivePool.systemDebt uint256 val STORAGE {
+hook Sstore _ActivePool.systemDebt uint256 val {
     ghostSystemDebtPrev = ghostSystemDebt;
     ghostSystemDebt = val;
 }
@@ -126,11 +126,11 @@ ghost bool ghostFeeRecipientCollSharesChanged {
     init_state axiom ghostFeeRecipientCollSharesChanged == false;
 }
 
-hook Sload uint256 val _ActivePool.feeRecipientCollShares STORAGE {
+hook Sload uint256 val _ActivePool.feeRecipientCollShares {
     require(ghostFeeRecipientCollShares == val);
 }
 
-hook Sstore _ActivePool.feeRecipientCollShares uint256 val STORAGE {
+hook Sstore _ActivePool.feeRecipientCollShares uint256 val {
     ghostFeeRecipientCollSharesPrev = ghostFeeRecipientCollShares;
     ghostFeeRecipientCollShares = val;
     ghostFeeRecipientCollSharesChanged = true;

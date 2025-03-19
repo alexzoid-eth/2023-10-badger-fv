@@ -15,10 +15,10 @@ ghost uint256 ghostLocked {
     axiom ghostLocked == 1 || ghostLocked == 2; // OPEN or LOCKED
 }
 
-hook Sload uint256 val currentContract.locked STORAGE {
+hook Sload uint256 val currentContract.locked {
     require(ghostLocked == val);
 }
 
-hook Sstore currentContract.locked uint256 val STORAGE {
+hook Sstore currentContract.locked uint256 val {
     ghostLocked = val;
 }

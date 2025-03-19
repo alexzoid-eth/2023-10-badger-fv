@@ -19,11 +19,11 @@ ghost uint16 ghostFeeBps {
     init_state axiom ghostFeeBps == 3;
 }
 
-hook Sload uint16 val currentContract.feeBps STORAGE {
+hook Sload uint16 val currentContract.feeBps {
     require(ghostFeeBps == val);
 }
 
-hook Sstore currentContract.feeBps uint16 val STORAGE {
+hook Sstore currentContract.feeBps uint16 val {
     ghostFeeBps = val;
 }
 
@@ -35,11 +35,11 @@ ghost bool ghostFlashLoansPaused {
     init_state axiom ghostFlashLoansPaused == false;
 }
 
-hook Sload bool val currentContract.flashLoansPaused STORAGE {
+hook Sload bool val currentContract.flashLoansPaused {
     require(ghostFlashLoansPaused == val);
 }
 
-hook Sstore currentContract.flashLoansPaused bool val STORAGE {
+hook Sstore currentContract.flashLoansPaused bool val {
     ghostFlashLoansPaused = val;
 }
 

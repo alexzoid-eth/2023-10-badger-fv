@@ -26,11 +26,11 @@ ghost address ghostAuthority {
     init_state axiom ghostAuthority == 0;
 }
 
-hook Sload address val currentContract._authority STORAGE {
+hook Sload address val currentContract._authority {
     require(ghostAuthority == val);
 }
 
-hook Sstore currentContract._authority address val STORAGE {
+hook Sstore currentContract._authority address val {
     ghostAuthority = val;
 }
 
@@ -42,11 +42,11 @@ ghost bool ghostAuthorityInitialized {
     init_state axiom ghostAuthorityInitialized == false;
 }
 
-hook Sload bool val currentContract._authorityInitialized STORAGE {
+hook Sload bool val currentContract._authorityInitialized {
     require(ghostAuthorityInitialized == val);
 }
 
-hook Sstore currentContract._authorityInitialized bool val STORAGE {
+hook Sstore currentContract._authorityInitialized bool val {
     ghostAuthorityInitialized = val;
 }
 

@@ -215,13 +215,13 @@ rule validInsertPositionIntegrity(env e, uint256 _NICR, bytes32 _prevId, bytes32
 
     bool isValid = validInsertPosition(e, _NICR, _prevId, _nextId);
 
-    assert(_prevId == dummyId() && _nextId == dummyId() 
+    assert(_prevId == DUMMY_ID() && _nextId == DUMMY_ID() 
         => isValid == isEmpty());
-    assert(_prevId == dummyId() && _nextId != dummyId() 
+    assert(_prevId == DUMMY_ID() && _nextId != DUMMY_ID() 
         => (isValid == (ghostHead == _nextId && to_mathint(_NICR) >= ghostCachedNominalICR[_nextId])));
-    assert(_prevId != dummyId() && _nextId == dummyId() 
+    assert(_prevId != DUMMY_ID() && _nextId == DUMMY_ID() 
         => (isValid == (ghostTail == _prevId && to_mathint(_NICR) <= ghostCachedNominalICR[_prevId])));
-    assert(_prevId != dummyId() && _nextId != dummyId() 
+    assert(_prevId != DUMMY_ID() && _nextId != DUMMY_ID() 
         => (isValid == (_prevId == ghostPrevId[_nextId] 
             && ghostCachedNominalICR[_prevId] >= to_mathint(_NICR) 
             && to_mathint(_NICR) >= ghostCachedNominalICR[_nextId])

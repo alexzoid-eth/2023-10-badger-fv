@@ -22,7 +22,6 @@ methods {
     function _SortedCdps.cdpManager() external returns (address) envfree;
     function _SortedCdps.maxSize() external returns (uint256) envfree;
     function _SortedCdps.nextCdpNonce() external returns (uint256) envfree;
-    function _SortedCdps.dummyId() external returns (bytes32) envfree;
     // Summarizing as a deterministic and unique function. need to prove that this
     function _SortedCdps.toCdpId(address owner, uint256 blockHeight, uint256 nonce) external returns (bytes32) envfree;
     function _SortedCdps.toCdpId(address owner, uint256 blockHeight, uint256 nonce) internal returns (bytes32) 
@@ -61,7 +60,7 @@ methods {
 definition ID_IN_LIST(bytes32 _id) returns bool =
     _id != DUMMY_ID() && (_id == ghostHead || ghostPrevId[_id] != DUMMY_ID() || ghostNextId[_id] != DUMMY_ID());
 
-definition DUMMY_ID() returns bytes32 = _SortedCdps.dummyId();
+definition DUMMY_ID() returns bytes32 = to_bytes32(0);
 
 definition HARNESS_FUNCTIONS(method f) returns bool =
     f.selector == sig:batchRemoveHarness(bytes32, bytes32).selector
@@ -134,11 +133,11 @@ ghost bytes32 ghostHead {
     init_state axiom ghostHead == to_bytes32(0);
 }
 
-hook Sload bytes32 val _SortedCdps.data.head STORAGE {
+hook Sload bytes32 val _SortedCdps.data.head {
     require(ghostHead == val);
 }
 
-hook Sstore _SortedCdps.data.head bytes32 val STORAGE {
+hook Sstore _SortedCdps.data.head bytes32 val {
     ghostHead = val;
 }
 
@@ -150,11 +149,11 @@ ghost bytes32 ghostTail {
     init_state axiom ghostTail == to_bytes32(0);
 }
 
-hook Sload bytes32 val _SortedCdps.data.tail STORAGE {
+hook Sload bytes32 val _SortedCdps.data.tail {
     require(ghostTail == val);
 }
 
-hook Sstore _SortedCdps.data.tail bytes32 val STORAGE {
+hook Sstore _SortedCdps.data.tail bytes32 val {
     ghostTail = val;
 }
 
@@ -166,11 +165,11 @@ ghost mathint ghostSize {
     init_state axiom ghostSize == 0;
 }
 
-hook Sload uint256 val _SortedCdps.data.size STORAGE {
+hook Sload uint256 val _SortedCdps.data.size {
     require(require_uint256(ghostSize) == val);
 }
 
-hook Sstore _SortedCdps.data.size uint256 val STORAGE {
+hook Sstore _SortedCdps.data.size uint256 val {
     ghostSize = val;
 }
 
@@ -182,11 +181,11 @@ ghost mapping (bytes32 => bytes32) ghostNextId {
     init_state axiom forall bytes32 i. ghostNextId[i] == to_bytes32(0);
 }
 
-hook Sload bytes32 val _SortedCdps.data.nodes[KEY bytes32 i].nextId STORAGE {
+hook Sload bytes32 val _SortedCdps.data.nodes[KEY bytes32 i].nextId {
     require(ghostNextId[i] == val);
 }
 
-hook Sstore _SortedCdps.data.nodes[KEY bytes32 i].nextId bytes32 val STORAGE {
+hook Sstore _SortedCdps.data.nodes[KEY bytes32 i].nextId bytes32 val {
     ghostNextId[i] = val;
 }
 
@@ -198,11 +197,11 @@ ghost mapping (bytes32 => bytes32) ghostPrevId {
     init_state axiom forall bytes32 i. ghostPrevId[i] == to_bytes32(0);
 }
 
-hook Sload bytes32 val _SortedCdps.data.nodes[KEY bytes32 i].prevId STORAGE {
+hook Sload bytes32 val _SortedCdps.data.nodes[KEY bytes32 i].prevId {
     require(ghostPrevId[i] == val);
 }
 
-hook Sstore _SortedCdps.data.nodes[KEY bytes32 i].prevId bytes32 val STORAGE {
+hook Sstore _SortedCdps.data.nodes[KEY bytes32 i].prevId bytes32 val {
     ghostPrevId[i] = val;
 }
 
@@ -220,11 +219,11 @@ ghost mathint ghostNextCdpNoncePrev {
     axiom ghostNextCdpNoncePrev < max_uint64;
 }
 
-hook Sload uint256 val _SortedCdps.nextCdpNonce STORAGE {
+hook Sload uint256 val _SortedCdps.nextCdpNonce {
     require(require_uint256(ghostNextCdpNonce) == val);
 }
 
-hook Sstore _SortedCdps.nextCdpNonce uint256 val STORAGE {
+hook Sstore _SortedCdps.nextCdpNonce uint256 val {
     ghostNextCdpNoncePrev = ghostNextCdpNonce;
     ghostNextCdpNonce = val;
 }
@@ -237,11 +236,11 @@ ghost mapping (bytes32 => mathint) ghostCachedNominalICR {
     init_state axiom forall bytes32 i. ghostCachedNominalICR[i] == 0;
 }
 
-hook Sload uint256 val _SortedCdps.cachedNominalICR[KEY bytes32 i] STORAGE {
+hook Sload uint256 val _SortedCdps.cachedNominalICR[KEY bytes32 i] {
     require(require_uint256(ghostCachedNominalICR[i]) == val);
 }
 
-hook Sstore _SortedCdps.cachedNominalICR[KEY bytes32 i] uint256 val STORAGE {
+hook Sstore _SortedCdps.cachedNominalICR[KEY bytes32 i] uint256 val {
     ghostCachedNominalICR[i] = val;
 }
 
